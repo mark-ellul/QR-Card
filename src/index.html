@@ -5,42 +5,39 @@
 	<link rel="stylesheet" href="css/jquery.mobile-1.0a1.min.css" />
 	<script src="js/jquery-1.4.3.min.js"></script>
 	<script src="js/jquery.mobile-1.0a1.min.js"></script>
+
+  <script src="js/jquery.tmpl.min.js"></script>
+  <script type="text/html" id="list_tmpl">
+  <li class="liqr ui-li-has-thumb ui-li ui-btn ui-btn-up-c ui-btn-icon-right"> 
+            <img src="${ qr_filename }" width="80px" height="80px" id="${id}" /> 
+            <h3><a href="#showqr" class="showqr_href">${ qr_title }</a></h3> 
+            <p>${ qr_description }</p> 
+          </li> 
+  </script>
+    <script src="js/qrbizcards.js"></script>
 </head> 
 <body> 
 
 <div data-role="page" id="main">
 
 	<div data-role="header">
-		<h1>QR Cards by www.iPlusD.net</h1>
+		<h1>QRBiz Cards</h1>
 	</div><!-- /header -->
 
-	<div data-role="content">	
-		<ul data-role="listview"> 
-					<li> 
-						<img src="img/contact_qr.png" /> 
-						<h3><a href="#showqr">VCF Card</a></h3> 
-						<p>vCard</p> 
-					</li> 
-					<li> 
-						<img src="img/email_qr.png" /> 
-						<h3><a href="#emailqr">Email me</a></h3> 
-						<p>Email Mark</p> 
+	<div data-role="content" id="main_list_view">	
+		<ul data-role="listview" id="main_view"> 
+					
+					
+					<li id="manage_db"> 
+						<img src="img/db.png" /> 
+						<h3><a href="#edit">Manage</a></h3> 
+						<p>Add, Re-Order or Remove QR Cards</p> 
 					</li>
-					<li> 
-						<img src="img/phone_qr.png" /> 
-						<h3><a href="#phoneqr">Phone Mark</a></h3> 
-						<p>Mark Mobile</p> 
-					</li>
-					<li> 
-						<img src="img/web_qr.png" /> 
-						<h3><a href="#webqr">www.iplusd.net</a></h3> 
-						<p>www.iplusd.net</p> 
-					</li>
-					<li> 
-						<img src="img/twitter_qr.png" /> 
-						<h3><a href="#twitterqr">Twitter</a></h3> 
-						<p>http://twitter.com/iplusd_net</p> 
-					</li>
+					<li id="clear_db"> 
+            <img src="img/cnrdelete-all.png" /> 
+            <h3><a href="#clear">Empty</a></h3> 
+            <p>Empty the Database in one press of the button</p> 
+          </li>
 				</ul>	
 	</div><!-- /content -->
 
@@ -57,7 +54,7 @@
 	</div><!-- /header -->
 
 	<div data-role="content">	
-	    <img src="img/contact_qr.png"  width="177" height="177">
+	    <img src=""  width="177" height="177" id="show_qr_img">
 		<p><a href="#main">Back to Main</a></p>	
 	</div><!-- /content -->
 
@@ -83,16 +80,64 @@
 	</div><!-- /header -->
 </div><!-- /page -->
 
-<!-- Start of second page -->
-<div data-role="page" id="emailqr">
+<div data-role="page" id="clear">
+  <div data-role="header">
+    <h1>Edit</h1>
+  </div><!-- /header -->
+  
+  <div data-role="content">
+  <input type="button" data-role="button" data-icon="ok" data-theme="b"  data-inline="true" id="delete_data" value="Delete" />
+    <a href="#main" data-role="button" data-icon="delete" data-inline="true">Cancel</a>
+  </div>
+  
+  <div data-role="footer">
+    <h4>www.iPlusD.net</h4>
+  </div>
+  
+</div>
+
+
+<div data-role="page" id="edit">
+  <div data-role="header">
+    <h1>Edit</h1>
+  </div><!-- /header -->
+  
+  <div data-role="content">
+    <a href="#add" data-role="button" data-icon="plus" data-rel="dialog" data-transition="pop" >Add New</a>
+  </div>
+  
+  <div data-role="footer">
+    <h4>www.iPlusD.net</h4>
+  </div>
+  
+</div>
+
+<!-- Start of edit page -->
+<div data-role="page" id="add">
 
 	<div data-role="header">
-		<h1>QR</h1>
+		<h1>Edit</h1>
 	</div><!-- /header -->
 
 	<div data-role="content">	
-	    <img src="img/email_qr.png"  width="177" height="177">
-		<p><a href="#main">Back to Main</a></p>	
+	    <div data-role="fieldcontain">
+  <span> URL </span>
+  <input type="text" id="qr_url" />
+   <input type="button" data-role="button" data-icon="plus" data-theme="b"  data-inline="true" id="generate_qr" value="Test Generate QR" />
+</div>
+<div id="generated_qr" style="display:none;"><canvas id="canv_qr"></canvas></div>
+      <div data-role="fieldcontain">
+  <span> Title </span>
+  <input type="text" id="qr_label" />
+</div>
+      <div data-role="fieldcontain">
+  <span> Description </span>
+  <input type="text" id="qr_description" />
+</div>
+		<div data-role="fieldcontain">
+		    <input data-role="button" data-icon="plus" data-theme="b"  data-inline="true" id="add_qr"  value="Add"/>
+		   <a href="#edit" data-icon="delete"  data-role="button" data-theme="c"  data-inline="true"  >Cancel</a>
+		</div>
 	</div><!-- /content -->
 
 	<div data-role="footer">
@@ -100,22 +145,6 @@
 	</div><!-- /header -->
 </div><!-- /page -->
 
-<!-- Start of second page -->
-<div data-role="page" id="twitterqr">
-
-	<div data-role="header">
-		<h1>QR</h1>
-	</div><!-- /header -->
-
-	<div data-role="content">	
-	    <img src="img/twitter_qr.png"  width="177" height="177">
-		<p><a href="#main">Back to Main</a></p>	
-	</div><!-- /content -->
-
-	<div data-role="footer">
-		<h4>www.iPlusD.net</h4>
-	</div><!-- /header -->
-</div><!-- /page -->
 
 </body>
 </html>
